@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 에듀링크 :school_satchel:
 
-## Getting Started
+에듀링크는 혁신적인 교육 플랫폼입니다. 
+이 프로젝트는 `shadcn/ui`, `Zod`, 그리고 `React Hook Form`을 사용하여 개발되었습니다.
 
-First, run the development server:
+## :wrench: 시작하기
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+로컬 환경에서 프로젝트를 실행하기 위한 가이드입니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### :package: 필수 조건
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+프로젝트를 실행하기 전에 아래의 도구들이 설치되어 있어야 합니다:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Node.js
+- npm 또는 yarn
 
-## Learn More
+### :rocket: 설치 및 실행
 
-To learn more about Next.js, take a look at the following resources:
+1. 리포지토리를 클론합니다:
+   ```bash
+   git clone https://github.com/joeunparkdev/eduLink
+   
+2. 프로젝트 디렉토리로 이동합니다:
+   ```bash
+    cd edulink
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. 필요한 패키지를 설치합니다:
+   ```bash
+    npm install
+    # 또는
+    yarn install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4. 개발 서버를 시작합니다:
+   ```bash
+    npm start
+    # 또는
+    yarn start
 
-## Deploy on Vercel
+### :zap: 기능
+- 로그인 및 회원가입: 사용자는 이메일과 비밀번호를 사용하여 로그인 및 회원가입을 할 수 있습니다.
+- 입력 유효성 검사: Zod를 사용한 폼 입력값의 유효성을 검사합니다.
+- 사용자 친화적인 UI: shadcn/ui 컴포넌트 라이브러리를 통해 사용자 친화적인 인터페이스를 제공합니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### :bulb: 사용된 기술
+- React
+- shadcn/ui
+- Zod
+- React Hook Form
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
