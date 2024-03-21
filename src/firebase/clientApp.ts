@@ -1,35 +1,34 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
-// Firebase 프로젝트 설정
+// Firebase 프로젝트 설정에서 환경 변수 사용
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
 // Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
 
-// Firebase 인증 초기화
-const auth = getAuth(app);
+// Auth 인스턴스 export
+export const auth = getAuth(app);
 
 // Google 로그인 함수
-const signInWithGoogle = () => {
-  console.log('signInWithGoogle called');
+export const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      // 로그인 성공 처리
-      console.log(result);
-    })
-    .catch((error) => {
-      // 로그인 실패 처리
-      console.error(error);
-    });
-};
+  try {
+    const result = await signInWithPopup(auth, provider);
+    // 로그인 성공 처리
+    console.log('Google 로그인 성공:', result.user);
+    return result.user; // 로그인한 사용자 정보 반환
+  } catch (error) {
+    // 로그인 실패 처리
+    console.error('Google 로그인 실패:', error);
+    throw error; // 에러를 다시 던져서 호출한 곳에서 처리할 수 있도록 함
+  }
 
-export { signInWithGoogle };
+};
