@@ -3,9 +3,11 @@ import { useRouter } from 'next/router';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase/clientApp';
 import Link from 'next/link';
+import { User } from 'firebase/auth';
 
 export default function Home() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+
   const router = useRouter();
 
   useEffect(() => {

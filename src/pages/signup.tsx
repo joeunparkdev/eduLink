@@ -9,16 +9,20 @@ export default function Signup()  {
   const router = useRouter();
 
   // 이메일/비밀번호로 회원가입
-  const handleSignup = async (e) => {
+  const handleSignup = async (e:any) => {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log('회원가입 성공:', userCredential.user);
       router.push('/'); // 회원가입 성공 시 홈 페이지로 리다이렉트
     } catch (error) {
-      console.error('회원가입 에러:', error.message);
-      alert(error.message); // 사용자에게 에러 메시지 표시
-    }
+      if (error instanceof Error) {
+        console.error('회원가입 에러:', error.message);
+        alert(error.message); 
+      } else {
+        console.error('회원가입 에러:', error);
+        alert('An unexpected error occurred'); 
+      }
   };
 
   // Google 로그인으로 회원가입
@@ -28,11 +32,15 @@ export default function Signup()  {
       const result = await signInWithPopup(auth, provider);
       console.log('Google 회원가입 성공:', result.user);
       router.push('/'); // 회원가입 성공 시 홈 페이지로 리다이렉트
-    } catch (error) {
-      console.error('Google 회원가입 에러:', error.message);
-      alert(error.message); // 사용자에게 에러 메시지 표시
+    }  catch (error) {
+      if (error instanceof Error) {
+        console.error('Google 회원가입 에러:', error.message);
+        alert(error.message); 
+      } else {
+        console.error('Google 회원가입 에러:', error);
+        alert('예상치 못한 에러가 발생했습니다'); 
+      }
     }
-  };
 
   return (
     <div className="signup-container">
@@ -62,4 +70,5 @@ export default function Signup()  {
     </div>
   );
 };
-
+}
+}
