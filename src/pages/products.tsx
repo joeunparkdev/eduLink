@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 
-const ProductsPage = () => {
+
+export default function Products() {
     const [products, setProducts] = useState([{ id: 1, name: "상품 1", price: 10000, imageUrl: "/path/to/image" }]);
 
     return (
@@ -21,4 +22,3 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;

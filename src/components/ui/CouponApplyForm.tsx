@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CouponSystem } from '../lib/coupons';
-import styles from '../styles/CouponApplyForm.module.css';
+import styles from '../../styles/couponApplyForm.module.css';
 
 interface CouponApplyFormProps {
   couponSystem: CouponSystem;

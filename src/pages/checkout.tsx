@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CouponApplyForm from '../components/CouponApplyForm';
+import CouponApplyForm from '../components/ui/CouponApplyForm';
 import { CouponSystem } from '../lib/coupons';
 
 const couponSystem = new CouponSystem();
@@ -19,7 +19,8 @@ couponSystem.addCoupon({
   expirationDate: '2024-12-31'
 });
 
-const CheckoutPage: React.FC = () => {
+
+export default function Checkout() {
   const [finalPrice, setFinalPrice] = useState(20000); // 주문 전체 금액을 상태로 관리
 
   const handleCouponApplied = (discountedPrice: number) => {
@@ -35,5 +36,3 @@ const CheckoutPage: React.FC = () => {
     </div>
   );
 };
-
-export default CheckoutPage;

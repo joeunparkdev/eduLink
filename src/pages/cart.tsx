@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 
-const CartPage = () => {
+
+export default function Cart() {
     return (
         <div>
             <h1>장바구니</h1>
@@ -14,4 +15,3 @@ const CartPage = () => {
     );
 };
 
-export default CartPage;
