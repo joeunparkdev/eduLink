@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CouponApplyForm from '../components/ui/CouponApplyForm';
+import CouponApplyForm from '../components/ui/coupon-apply-form';
 import { CouponSystem } from '../lib/coupons';
 
 const couponSystem = new CouponSystem();
