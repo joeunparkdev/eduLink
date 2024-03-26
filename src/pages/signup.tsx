@@ -9,7 +9,7 @@ export default function Signup() {
   const router = useRouter();
 
   // 이메일/비밀번호로 회원가입
-  const handleSignup = async (e) => {
+  const handleSignup = async (e:any) => {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
