@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 import { auth } from '../firebase/clientApp';
 import Link from 'next/link';
-import { User } from 'firebase/auth';
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -18,7 +16,6 @@ export default function Home() {
         setUser(null);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -34,15 +31,24 @@ export default function Home() {
       {user ? (
         <div className="mt-4">
           <p>환영합니다, {user.email}!</p>
-          <button onClick={handleLogout} className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg">로그아웃</button>
+          <Link href="/products">
+            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg mr-2">상품 보기</button>
+          </Link>
+          <Link href="/cart">
+            <button className="px-4 py-2 bg-green-500 text-white rounded-lg mr-2">장바구니</button>
+          </Link>
+          <Link href="/checkout">
+            <button className="px-4 py-2 bg-red-500 text-white rounded-lg">체크아웃</button>
+          </Link>
+          <button onClick={handleLogout} className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-lg">로그아웃</button>
         </div>
       ) : (
         <div className="mt-4">
-          <Link href="/login" passHref>
-            <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg mr-2">로그인</button>
+          <Link href="/login">
+            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg mr-2">로그인</button>
           </Link>
-          <Link href="/signup" passHref>
-            <button className="px-4 py-2 bg-accent text-accent-foreground rounded-lg">회원가입</button>
+          <Link href="/signup">
+            <button className="px-4 py-2 bg-green-500 text-white rounded-lg">회원가입</button>
           </Link>
         </div>
       )}
