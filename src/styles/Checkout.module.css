@@ -1,0 +1,153 @@
+.checkoutContainer {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .productSection {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ececec;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .productImageContainer {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border: 1px solid #ececec;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-right: 1rem;
+  }
+  
+  .productImage {
+    width: 100%;
+    height: auto;
+  }
+  
+  .productInfoContainer {
+    flex-grow: 1;
+  }
+  
+  .productName {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  
+  .productPrice {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.25rem 0;
+  }
+  
+  .priceDetails {
+    text-align: right;
+    flex-grow: 1;
+  }
+  
+  .priceDetails p {
+    margin: 0;
+  }
+  
+  .customerInfoSection, .paymentSection, .pointsSection {
+    margin-bottom: 1rem;
+  }
+  
+  .inputField, .selectField {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .pointsButton, .checkoutButton {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    background-color: #007bff; /* Blue for points button */
+  }
+  
+  .checkoutButton {
+    background-color: #28a745; /* Green for checkout button */
+  }
+  
+  .addressInput {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* 전체 너비를 사용하도록 설정 */
+  }
+  
+  .finalPrice {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #28a745; /* Green for final price */
+    margin-top: 0.5rem;
+  }
+  
+  /* 배송지 주소 입력 필드 등 추가적인 스타일링이 필요합니다. */
+  .addressField {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .addressInput {
+    flex: 1;
+    margin-right: 0.5rem;
+  }
+  
+  /* 쿠폰 적용 폼 스타일링 */
+  .couponApplyForm {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .couponCodeInput {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+  }
+  
+  .applyCouponButton {
+    padding: 0.5rem 1rem;
+    background-color: #f0ad4e; /* Orange for coupon button */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* 주문 요약 및 결제 금액 디스플레이 */
+  .orderSummary {
+    border-top: 1px solid #ececec;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .orderTotal {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+  }
+  
+  .discountLine {
+    text-decoration: line-through;
+    color: #999;
+  }
+  
