@@ -61,3 +61,24 @@ export class CouponSystem {
     }
   }
 }
+
+// 쿠폰 시스템 인스턴스 생성
+const couponSystem = new CouponSystem();
+
+// 쿠폰 시스템에 샘플 쿠폰 추가
+couponSystem.addCoupon({
+  id: '20000',
+  type: 'fixed',
+  amount: 20000,
+  description: '20,000원 할인 쿠폰',
+  expirationDate: '2024-12-31'
+});
+couponSystem.addCoupon({
+  id: '2',
+  type: 'percentage',
+  amount: 30,
+  description: '30% 할인 쿠폰',
+  expirationDate: '2024-12-31'
+});
+
+export default couponSystem;

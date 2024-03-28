@@ -1,153 +1,153 @@
+.container * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mainContainer body {
+  font-family: 'Arial', sans-serif;
+  background: #f4f4f4;
+}
+
+/* Centering the checkout container */
 .checkoutContainer {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+  width: 80%;
+  max-width: 1000px;
+  margin: 1rem auto;
+}
+
+/* Product Details */
+.productSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.productImageContainer {
+  width: 100px;
+  height: 100px;
+  background-color: #eee; /* Replace with actual image using background-image */
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.productInfoContainer {
+  flex: 1;
+}
+
+.productName {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.productPrice {
+  font-size: 1rem;
+  color: #666;
+}
+
+.priceDetails {
+  text-align: right;
+}
+
+/* Payment Method Section */
+.paymentSection {
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.paymentButton {
+  display: inline-block;
+  width: calc(33% - 10px);
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 0;
+  background-color: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.paymentButton:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Coupon Section */
+.couponSection {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.couponInput {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  width: calc(70% - 20px);
+}
+
+.applyCouponButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.applyCouponButton:hover {
+  background-color: #0056b3;
+}
+
+/* Final Price */
+.finalPrice {
+  font-size: 1.25rem;
+  color: #28a745;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .paymentButton {
+    width: calc(50% - 10px);
   }
-  
-  .productSection {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ececec;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .productImageContainer {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-    border: 1px solid #ececec;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 4px;
-    margin-right: 1rem;
-  }
-  
-  .productImage {
+}
+
+@media (max-width: 480px) {
+  .paymentButton {
     width: 100%;
-    height: auto;
+    margin: 10px 0;
   }
-  
-  .productInfoContainer {
-    flex-grow: 1;
-  }
-  
-  .productName {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
-  }
-  
-  .productPrice {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 0.25rem 0;
-  }
-  
-  .priceDetails {
-    text-align: right;
-    flex-grow: 1;
-  }
-  
-  .priceDetails p {
-    margin: 0;
-  }
-  
-  .customerInfoSection, .paymentSection, .pointsSection {
-    margin-bottom: 1rem;
-  }
-  
-  .inputField, .selectField {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-  }
-  
-  .pointsButton, .checkoutButton {
-    display: block;
-    width: 100%;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    background-color: #007bff; /* Blue for points button */
-  }
-  
-  .checkoutButton {
-    background-color: #28a745; /* Green for checkout button */
-  }
-  
-  .addressInput {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%; /* 전체 너비를 사용하도록 설정 */
-  }
-  
-  .finalPrice {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #28a745; /* Green for final price */
-    margin-top: 0.5rem;
-  }
-  
-  /* 배송지 주소 입력 필드 등 추가적인 스타일링이 필요합니다. */
-  .addressField {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .addressInput {
-    flex: 1;
-    margin-right: 0.5rem;
-  }
-  
-  /* 쿠폰 적용 폼 스타일링 */
-  .couponApplyForm {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-  
-  .couponCodeInput {
-    flex-grow: 1;
-    margin-right: 0.5rem;
-  }
-  
+
+  .couponInput,
   .applyCouponButton {
-    padding: 0.5rem 1rem;
-    background-color: #f0ad4e; /* Orange for coupon button */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    width: 100%;
+    margin: 10px 0;
   }
-  
-  /* 주문 요약 및 결제 금액 디스플레이 */
-  .orderSummary {
-    border-top: 1px solid #ececec;
-    padding-top: 1rem;
-    display: flex;
+
+  .productSection {
     flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .orderTotal {
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
+
+  .productImageContainer {
+    margin-bottom: 10px;
   }
-  
-  .discountLine {
-    text-decoration: line-through;
-    color: #999;
-  }
-  
+}

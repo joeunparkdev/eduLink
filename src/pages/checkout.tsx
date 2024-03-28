@@ -1,146 +1,148 @@
-// React와 관련된 라이브러리 임포트
 import React, { useState, useEffect } from 'react';
+import { loadPaymentWidget } from '@tosspayments/payment-widget-sdk';
+import couponSystem from '../lib/coupons';
+import { useRouter } from 'next/router';
 
-// 쿠폰 시스템 및 쿠폰 적용 폼 컴포넌트 임포트
-import CouponApplyForm from '../components/ui/coupon-apply-form';
-import { CouponSystem } from '../lib/coupons';
-
-// 스타일 및 CSS 임포트
-import styles from '../styles/Checkout.module.css';
-
-// 쿠폰 시스템 인스턴스 생성
-const couponSystem = new CouponSystem();
-
-// 쿠폰 시스템에 샘플 쿠폰 추가
-couponSystem.addCoupon({
-  id: '20000',
-  type: 'fixed',
-  amount: 20000,
-  description: '20,000원 할인 쿠폰',
-  expirationDate: '2024-12-31'
-});
-couponSystem.addCoupon({
-  id: '2',
-  type: 'percentage',
-  amount: 30,
-  description: '30% 할인 쿠폰',
-  expirationDate: '2024-12-31'
-});
-
-// 주문 및 결제 페이지 컴포넌트 정의
-export default function Checkout() {
-  // 상태 변수 정의
+const Checkout = () => {
+  const [paymentWidget, setPaymentWidget] = useState(null);
+  const [price, setPrice] = useState(18000);
+  const [shippingFee, setShippingFee] = useState(2500);
   const [customerInfo, setCustomerInfo] = useState({
     name: '',
     phone: '',
     email: '',
     address: '',
-    paymentMethod: '', 
+    paymentMethod: '',
   });
-  const [finalPrice, setFinalPrice] = useState<number>(20000);
-  const [productCount, setProductCount] = useState<number>(1);
-  const [points, setPoints] = useState<number>(3000);
-  const [pointsUsed, setPointsUsed] = useState<number>(0);
-  const [appliedCoupon, setAppliedCoupon] = useState<string>('');
+  const [finalPrice, setFinalPrice] = useState(20000);
+  const [points, setPoints] = useState(0);
+  const [pointsUsed, setPointsUsed] = useState(0);
+  const [couponCode, setCouponCode] = useState('');
+  const router = useRouter();
 
-  // 컴포넌트 마운트 시 쿠폰 적용
   useEffect(() => {
-    const bestCoupon = couponSystem.applyDiscount(finalPrice); // 최적의 쿠폰을 찾아 할인 적용
-    console.log('Best Coupon:', bestCoupon);
-    if (bestCoupon) {
-      applyCoupon(bestCoupon);
-    }
+    const fetchPaymentWidget = async () => {
+      try {
+        const loadedWidget = await loadPaymentWidget(widgetClientKey, customerKey);
+        setPaymentWidget(loadedWidget);
+      } catch (error) {
+        console.error('Error fetching payment widget:', error);
+      }
+    };
+    fetchPaymentWidget();
   }, []);
 
-  // 쿠폰 적용 함수
-  const applyCoupon = (couponCode: string | number) => {
-    const code = typeof couponCode === 'number' ? couponCode.toString() : couponCode;
-    const discountedPrice = couponSystem.applyDiscount(finalPrice, code); // 쿠폰 코드를 받아 할인 적용
+  useEffect(() => {
+    if (!paymentWidget) return;
+    const totalPrice = price + shippingFee;
+    const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
+      '#payment-methods-widget',
+      { value: totalPrice },
+      { variantKey: 'DEFAULT' }
+    );
+  }, [paymentWidget, price, shippingFee]);
+
+  const applyCoupon = () => {
+    const discountAmount = couponSystem.getCouponDiscountAmount(couponCode); // 쿠폰 할인 금액 계산
+    const discountedPrice = finalPrice - discountAmount;
     setFinalPrice(discountedPrice);
-    setAppliedCoupon(code.toString());
   };
 
-  // 쿠폰 적용 이벤트 핸들러
-  const handleCouponApplied = (couponCode: string) => {
-    const couponId = parseInt(couponCode); // 쿠폰 코드를 숫자로 변환
-    applyCoupon(couponId); // 수정된 쿠폰 코드를 적용 함수에 전달
-  };
-
-  // 입력 값 변경 이벤트 핸들러
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCustomerInfo({ ...customerInfo, [name]: value });
   };
 
-  // 포인트 변경 이벤트 핸들러
-  const handlePointsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePointsChange = (event) => {
     const usedPoints = parseInt(event.target.value, 10) || 0;
     setPointsUsed(usedPoints <= points ? usedPoints : points);
   };
 
-  // 포인트로 최종 가격 계산
   const calculateTotalWithPoints = () => {
-    const totalPrice = (finalPrice - pointsUsed) * productCount;
+    const totalPrice = finalPrice - pointsUsed;
     return totalPrice >= 0 ? totalPrice : 0;
   };
 
-  // 결제 처리 함수
-  const handleCheckout = async () => {
-    if (!customerInfo.paymentMethod) {
-      alert('결제 방법을 선택해주세요.');
-      return;
-    }
+  const handleUseAllPoints = () => {
+    setPointsUsed(points); // 전체 포인트 사용
+  };
 
-    const paymentData = {
-      customerInfo,
-      finalPrice: calculateTotalWithPoints(),
-      productCount,
-      pointsUsed,
-    };
+  const handleCouponChange = (event) => {
+    setCouponCode(event.target.value);
+  };
 
-    try {
-      // 결제 처리 API 호출
-      const response = await fetch('/api/payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(paymentData),
-      });
+  const handleApplyCoupon = () => {
+    applyCoupon();
+  };
 
-      if (!response.ok) {
-        throw new Error('결제 처리 실패');
-      }
+  const handleTossPayment = () => {
+    const orderItems = ["상품1", "상품2", "상품3"]; // 테스트용 주문 항목
 
-      const result = await response.json();
-      console.log('결제 성공:', result);
-      alert('결제가 성공적으로 처리되었습니다.');
-    } catch (error) {
-      console.error('결제 처리 중 오류 발생:', error);
-      alert('결제 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
-    }
-    };
-    
-    return (
-    <div className={styles.checkoutContainer}>
-    <div className={styles.paymentSection}>
-    <select name="paymentMethod" value={customerInfo.paymentMethod} onChange={handleInputChange} className={styles.selectField}>
-    <option value="">결제 방법 선택</option>
-    <option value="creditCard">신용카드</option>
-    <option value="paypal">페이팔</option>
-    <option value="bankTransfer">은행 송금</option>
-    </select>
+    router.push({
+      pathname: '/payment',
+      query: {
+        orderItems: JSON.stringify(orderItems),
+        customerInfo: JSON.stringify(customerInfo),
+        couponCode: couponCode,
+      },
+    });
+  };
+
+  return (
+    <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <div className="flex flex-col lg:flex-row">
+        <div className="flex-1">
+          <div className="mb-4">
+            <h2 className="text-xl font-bold">상품 정보</h2>
+            <img className="w-32 h-32 object-cover rounded" src="/path-to-your-image.jpg" alt="Product" />
+            <p className="text-gray-600">{`${price.toLocaleString()}원`}</p>
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="name">이름</label>
+            <input className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="name" type="text" name="name" value={customerInfo.name} onChange={handleInputChange} placeholder="홍길동" />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="phone">연락처</label>
+            <input className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="phone" type="text" name="phone" value={customerInfo.phone} onChange={handleInputChange} placeholder="010-1234-5678" />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="email">이메일</label>
+            <input className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="email" type="email" name="email" value={customerInfo.email} onChange={handleInputChange} placeholder="user@example.com" />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="address">배송 주소</label>
+            <textarea className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="address" name="address" value={customerInfo.address} onChange={handleInputChange} placeholder="서울시 강남구 역삼동 123-45"></textarea>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col lg:flex-row">
+        <div className="flex-1">
+          <div className="mb-4">
+            <p>
+              포인트로 결제: {pointsUsed.toLocaleString()}원 
+            </p>
+            <p>
+             사용 가능 포인트: {points.toLocaleString()}원
+            </p>
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="coupon">쿠폰 코드</label>
+            <input className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="coupon" type="text" value={couponCode} onChange={handleCouponChange} placeholder="쿠폰 코드를 입력하세요" />
+            <button onClick={handleApplyCoupon} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
+              적용
+            </button>
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="mb-4">
+            <button onClick={handleTossPayment} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+              결제하기
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <CouponApplyForm couponSystem={couponSystem} onApply={handleCouponApplied} />
-    <div className={styles.customerInfoSection}>
-    <input type="text" name="address" value={customerInfo.address} onChange={handleInputChange} className={styles.inputField} placeholder="주소" />
-    </div>
-    <div className={styles.pointsSection}>
-    <input type="number" name="points" value={pointsUsed} onChange={handlePointsChange} className={styles.inputField} placeholder="사용 포인트" />
-    <p>사용 가능 포인트: {points.toLocaleString()}원</p>
-    <button onClick={() => setPointsUsed(points)} className={styles.pointsButton}>모든 포인트 사용</button>
-    </div>
-    <button onClick={handleCheckout} className={styles.checkoutButton}>결제하기</button>
-    </div>
-    );
-    }
+  );
+};
+
+export default Checkout;
